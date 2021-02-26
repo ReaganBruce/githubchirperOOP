@@ -29,7 +29,7 @@ const App = () => {
 
   return (
     <>
-      <form>
+      <form className="d-flex justify-content-center mt-3">
         <input
           type="text"
           value={userName}
@@ -42,16 +42,18 @@ const App = () => {
           onChange={(e) => setUserMessage(e.target.value)}
           placeholder="message"
         />
-        <button onClick={handleClick}>Chirp It!</button>
+        <button className="btn btn-primary" onClick={handleClick}>Chirp It!</button>
       </form>
 
-      <ul>
+      <main className="container-fluid mt-5">
         {chirps.map((value, id) => (
-          <li key={id}>
+          <h3 key={id}>
+            <div className="border border-primary p-2 ">
             {`@${value.username}: `} {value.chirp}
-          </li>
+            </div>
+          </h3>
         ))}
-      </ul>
+      </main>
     </>
   );
 };
