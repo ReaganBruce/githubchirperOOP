@@ -1,59 +1,59 @@
 import React, { useState, useEffect } from "react";
 
 const App = () => {
-  const [username, setUsername] = useState("");
-  const [msg, setMsg] = useState("");
-  const [tweets, setTweets] = useState([
+  const [userName, setUserName] = useState("");
+  const [userMessage, setUserMessage] = useState("");
+  const [chirps, setChirps] = useState([
     {
-      userName: "@HumanOverdose: ",
-      message: "I love tofu!",
+      username: `Joe Biden`,
+      chirp: `ahhhh i got hairy legs!`,
     },
     {
-      userName: "@RajonGadong: ",
-      message: "I stomp on the floor feet",
+      username: `realDonaldTrump`,
+      chirp: `pls don't ban me chirper!`,
     },
     {
-      userName: "@oneofYourFriends: ",
-      message: "Missssssyyyy",
+      username: `jakeLovett`,
+      chirp: "thats cool, you know what it is cool. too?",
     },
   ]);
 
-  useEffect(() => {},[tweets]);
-
+  
   const handleClick = (e) => {
     e.preventDefault();
-    let newTweet = { userName: username, message: msg };
-    setTweets([...tweets, newTweet]);
-    console.log(setTweets);
-    console.log(`Button Clicked!`);
-};
-
-  const myTweets = tweets.map((value, id) => {
-    return (
-      <li key={id}>{value.userName + ': '}{value.message}</li>
-    );
-  });
+    let newChirps = { username: userName, chirp: userMessage };
+    setChirps([...chirps, newChirps]);
+    console.log(newChirps);
+  };
+  useEffect(() => {}, [chirps]);
 
   return (
     <>
-      <input
-        value={username}
-        type="text"
-        placeholder="Username"
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        value={msg}
-        type="text"
-        placeholder="Chirp your thoughts... "
-        onChange={(e) => setMsg(e.target.value)}
-      />
-      <button onClick={(e) => handleClick(e)}>Chirp</button>
+      <form>
+        <input
+          type="text"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+          placeholder="username"
+        />
+        <input
+          type="text"
+          value={userMessage}
+          onChange={(e) => setUserMessage(e.target.value)}
+          placeholder="message"
+        />
+        <button onClick={handleClick}>Chirp It!</button>
+      </form>
 
-      <ul>{myTweets}</ul>
+      <ul>
+        {chirps.map((value, id) => (
+          <li key={id}>
+            {`@${value.username}: `} {value.chirp}
+          </li>
+        ))}
+      </ul>
     </>
   );
 };
 
 export default App;
-
