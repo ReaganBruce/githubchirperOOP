@@ -1,61 +1,73 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { v4 as uuidv4 } from "uuid";
 
-const App = () => {
-  const [userName, setUserName] = useState("");
-  const [userMessage, setUserMessage] = useState("");
-  const [chirps, setChirps] = useState([
-    {
-      username: `Joe Biden`,
-      chirp: `ahhhh i got hairy legs!`,
-    },
-    {
-      username: `realDonaldTrump`,
-      chirp: `pls don't ban me chirper!`,
-    },
-    {
-      username: `jakeLovett`,
-      chirp: "thats cool, you know what it is cool. too?",
-    },
-  ]);
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: "",
+      message: "",
+      chirps: [],
+    };
+  }
 
-  
-  const handleClick = (e) => {
+  componentDidMount() {
+    this.setState({
+      chirps: [
+        ...this.state.chirps,
+        { id: uuidv4(), user: "RealDonaldTrump", message: "i am not the president" },
+        { id: uuidv4(), user: "Joe Biden", message: "come on, jack" },
+        { id: uuidv4(), user: "Bernie Sanders", message: "i wish i was president" },
+      ],
+    });
+  }
+
+  handleButton(e) {
     e.preventDefault();
-    let newChirps = { username: userName, chirp: userMessage };
-    setChirps([...chirps, newChirps]);
-    console.log(newChirps);
-  };
-  useEffect(() => {}, [chirps]);
+    if (this.state.user === "" || this.state.message === "") return; //returning nothing can break out of the function/stop the function.
+    console.log(this.state.user);
+    console.log(this.state.message);
+    this.setState({
+      user: "",
+      message: "",
+      chirps: [...this.state.chirps, { id: uuidv4(), user: this.state.user, message: this.state.message }],
+    });
+  }
 
-  return (
-    <>
-      <form className="d-flex justify-content-center mt-3">
-        <input
-          type="text"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          placeholder="username"
-        />
-        <input
-          type="text"
-          value={userMessage}
-          onChange={(e) => setUserMessage(e.target.value)}
-          placeholder="message"
-        />
-        <button className="btn btn-primary" onClick={handleClick}>Chirp It!</button>
-      </form>
-
-      <main className="container-fluid mt-5">
-        {chirps.map((value, id) => (
-          <h3 key={id}>
-            <div className="border border-primary p-2 ">
-            {`@${value.username}: `} {value.chirp}
-            </div>
-          </h3>
-        ))}
+  render() {
+    return (
+      <main className="container">
+        <section className="row justify-content-around mt-5">
+          <div className="col-md-6">
+            <form className="form-group">
+              <input
+                value={this.state.user}
+                onChange={(e) => this.setState({ user: e.target.value })}
+              ></input>
+              <input
+                value={this.state.message}
+                onChange={(e) => this.setState({ message: e.target.value })}
+              ></input>
+              <button onClick={(e) => this.handleButton(e)} className="btn btn-primary col-5 m-5">
+                CHIRP...classy style
+              </button>
+            </form>
+          </div>
+        </section>
+        <section className="row justify-content-center mt-5">
+          <div className="col-md-6">
+            <ul className="list-group">
+              {this.state.chirps.map((chirp) => (
+                <li key={`users-chirps-${chirp.id}`}>
+                  @{chirp.user}: {chirp.message}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
       </main>
-    </>
-  );
-};
+    );
+  }
+}
 
 export default App;
